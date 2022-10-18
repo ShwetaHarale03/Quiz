@@ -1,0 +1,93 @@
+package Quiz_Demo;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.Scanner;
+
+//import Quiz_Application.Quiz;
+
+public class Main1 {
+	
+	static void userScore() {
+		try {
+			//Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/learn", "root", "MySql@99");
+			
+			Scanner sc = new Scanner(System.in);
+			System.out.println("Enter your name");
+			String name = sc.nextLine();
+			
+			String query = "select * from marks where name=" + name;
+			//PreparedStatement pstmt = con.prepareStatement(query);
+			//pstmt.setString(1, name);
+			
+			Statement stmt = con.createStatement();
+			
+			ResultSet rset = stmt.executeQuery(query);
+			
+			while(rset.next()) {
+				//String name = name1;
+				//name = rset.getString(1);
+				//String score = rset.getString(2);
+				//System.out.println(name + " : " + score );
+				
+				System.out.println(name + " : " + rset.getInt(2) );
+			}
+			
+			System.out.println("Updated..");
+			
+			con.close();
+			
+		}
+		catch(Exception e){
+			System.out.println(e);
+		}
+		
+	}
+	static void ScoreByOrder() {
+		try {
+			//Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/learn", "root", "MySql@99");
+			
+			String query = "select * from marks order by score desc";
+			
+			Statement stmt = con.createStatement();
+			
+			ResultSet rset = stmt.executeQuery(query);
+			
+			while(rset.next()) {
+				String name = rset.getString(1);
+				String score = rset.getString(2);
+				System.out.println(name + "   :   " + score );
+			}
+			
+			System.out.println("Updated..");
+			
+			con.close();
+			
+		}
+		catch(Exception e){
+			System.out.println(e);
+		}
+	}
+	
+	public static void main(String args[]) {
+		
+		 Quiz1 v =new Quiz1();
+	     v.logic();
+	     
+	     Scanner sc = new Scanner(System.in);
+	     System.out.println("to view score Enter 1");
+	     int n = sc.nextInt();
+	     Main1.userScore();
+	     
+	     System.out.println("to view score by sorted order Enter 2");
+	     int n1 = sc.nextInt();
+	     Main1.ScoreByOrder();
+	     
+	 }
+	
+}
